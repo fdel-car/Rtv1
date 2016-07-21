@@ -45,6 +45,13 @@ typedef struct	s_vect
 	double		z;
 }				t_vect;
 
+typedef struct	s_color
+{
+	int			r;
+	int			g;
+	int			b;
+}				t_color;
+
 typedef struct	s_rayt
 {
 	double		view_d;
@@ -71,7 +78,7 @@ typedef struct	s_obj
 	int			type;
 	void		*next;
 	double		rayon;
-	int			color;
+	t_color		color;
 }				t_obj;
 
 typedef struct	s_node
@@ -87,9 +94,15 @@ t_vect			multiple_value(t_vect u, double value);
 t_vect  		substract(t_vect u, t_vect v);
 t_vect			add(t_vect u, t_vect v);
 t_vect			normalize(t_vect u);
-void			ft_setpixel(t_graph *gr, int x, int y, int color);
+void			ft_setpixel(t_graph *gr, int x, int y, t_color color);
 int				ft_color(t_rayt *rt);
 t_obj			*ft_objects(char *scene);
-t_vect	create_vect(double x, double y, double z);
+t_vect			create_vect(double x, double y, double z);
+t_color			ft_light(t_node *node, t_rayt *rt, t_obj *obj);
+t_color			add_color(t_color u, t_color v);
+t_color			substract_color(t_color u, t_color v);
+t_color			multiple_color(t_color color, double value);
+t_color			create_color(int r, int g, int b);
+t_node			*ft_intersect(t_rayt *rt, t_obj *obj, t_node *node);
 
 #endif

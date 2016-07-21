@@ -12,7 +12,7 @@
 
 NAME = RTv1
 
-SRCS = main.c vector.c raytracing.c ft_draw.c ft_objects.c
+SRCS = main.c vector.c raytracing.c ft_draw.c ft_objects.c ft_light.c color.c
 
 OBJS = $(SRCS:.c=.o)
 

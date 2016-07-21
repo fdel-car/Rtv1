@@ -1,2 +1,5 @@
-1->cercle rayon: 2.2 pos: 1 0 10 125255->color
-1->cercle rayon: 1 pos: -1 1 10 255->color
+0->light pos: 5 4 2 color: 255 255 255
+0->light pos: -5 -4 -2 color: 255 0 0
+1->cercle rayon: 2.2 pos: 0 0 10 color: 0 0 255
+1->cercle rayon: 1.5 pos: 2 1 7 color: 255 0 0
+1->cercle rayon: 4 pos: -2 -1 15 color: 0 255 0

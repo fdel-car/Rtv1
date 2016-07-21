@@ -6,7 +6,7 @@
 /*   By: fdel-car <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/20 14:35:40 by fdel-car          #+#    #+#             */
-/*   Updated: 2016/07/20 14:35:42 by fdel-car         ###   ########.fr       */
+/*   Updated: 2016/07/21 20:31:11 by fdel-car         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int		ft_rt(t_rayt *rt, t_graph *gr, t_obj *obj)
 	return (0);
 }
 
-int     main(int ac, char **av)
+int		main(int ac, char **av)
 {
-    t_obj   *obj;
+	t_obj	*obj;
 	t_rayt	*rt;
 	t_graph	*gr;
 
@@ -60,7 +60,7 @@ int     main(int ac, char **av)
 	gr = (t_graph *)malloc(sizeof(t_graph));
 	gr->s_x = 720;
 	gr->s_y = 480;
-    obj = ft_objects(av[1]);
+	obj = ft_objects(av[1]);
 	if (!obj)
 		return (0);
 	ft_init_cam(rt);
