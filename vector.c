@@ -32,7 +32,7 @@ t_vect	multiple_value(t_vect u, double value)
 	return (w);
 }
 
-t_vect	substract(t_vect u, t_vect v)
+t_vect	subtract(t_vect u, t_vect v)
 {
 	t_vect w;
 

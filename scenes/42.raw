@@ -1,5 +1,6 @@
-0->light pos: 5 4 2 color: 255 255 255
-0->light pos: -5 -4 -2 color: 255 0 0
-1->cercle rayon: 2.2 pos: 0 0 10 color: 0 0 255
-1->cercle rayon: 1.5 pos: 2 1 7 color: 255 0 0
-1->cercle rayon: 4 pos: -2 -1 15 color: 0 255 0
+0->light pos: 0 8 -10 color: 0 255 0
+0->light pos: -10 8 -10 color: 0 0 255
+0->light pos: 10 8 -10 color: 255 0 0
+1->cercle rayon: 3.5 pos: -2 0 12 color: 0 0 255
+1->cercle rayon: 1.8 pos: 2 1 6 color: 255 0 0
+2->plan normale: 0 0 -1 pos: 0 0 18 color: 255 255 255

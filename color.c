@@ -32,14 +32,30 @@ t_color	add_color(t_color u, t_color v)
 {
 	t_color rgb;
 
-	rgb.r = u.r + v.r;
+	rgb.r = u.r + v.r * 0.85;
 	if (rgb.r > 255)
 		rgb.r = 255;
-	rgb.g = u.g + v.g;
+	rgb.g = u.g + v.g * 0.85;
 	if (rgb.g > 255)
 		rgb.g = 255;
-	rgb.b = u.b + v.b;
+	rgb.b = u.b + v.b * 0.85;
 	if (rgb.b > 255)
 		rgb.b = 255;
+	return (rgb);
+}
+
+t_color	subtract_color(t_color u, t_color v)
+{
+	t_color rgb;
+
+	rgb.r = u.r - v.r;
+	if (rgb.r < 0)
+		rgb.r = 0;
+	rgb.g = u.g - v.g;
+	if (rgb.g < 0)
+		rgb.g = 0;
+	rgb.b = u.b - v.b;
+	if (rgb.b < 0)
+		rgb.b = 0;
 	return (rgb);
 }

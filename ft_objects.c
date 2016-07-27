@@ -49,7 +49,8 @@ void	add_light(t_obj **first_ob, char *line)
 	tab = ft_strsplit(line, ' ');
 	free(line);
 	new->pos = create_vect(ft_atof(tab[2]), ft_atof(tab[3]), ft_atof(tab[4]));
-	new->color = create_color(ft_atoi(tab[6]), ft_atoi(tab[7]), ft_atoi(tab[8]));
+	new->color = create_color(ft_atoi(tab[6]), ft_atoi(tab[7]),
+	ft_atoi(tab[8]));
 	new->next = NULL;
 	while (tab[i])
 		free(tab[i++]);
@@ -70,7 +71,8 @@ void	add_cercle(t_obj **first_ob, char *line)
 	free(line);
 	new->rayon = ft_atof(tab[2]);
 	new->pos = create_vect(ft_atof(tab[4]), ft_atof(tab[5]), ft_atof(tab[6]));
-	new->color = create_color(ft_atoi(tab[8]), ft_atoi(tab[9]), ft_atoi(tab[10]));
+	new->color = create_color(ft_atoi(tab[8]), ft_atoi(tab[9]),
+	ft_atoi(tab[10]));
 	new->next = NULL;
 	while (tab[i])
 		free(tab[i++]);
@@ -94,6 +96,10 @@ t_obj	*ft_objects(char *scene)
 			add_light(&first_ob, line);
 		if (line[0] == '1')
 			add_cercle(&first_ob, line);
+		if (line[0] == '2')
+			add_plan(&first_ob, line);
+		// if (line[0] == '3')
+		// 	add_cylinder(&first_ob, line);
 	}
 	free(line);
 	close(fd);
