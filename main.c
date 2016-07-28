@@ -33,13 +33,15 @@ void	ft_init_cam(t_rayt *rt)
 	rt->vec_dir = normalize(subtract(rt->look_at, rt->c_pos));
 	rt->vec_right = multiple(rt->vec_up, rt->vec_dir);
 	rt->vec_up = multiple(rt->vec_dir, rt->vec_right);
-	rt->up_left = add(rt->c_pos, add(multiple_value(rt->vec_dir, rt->view_d),
-	subtract(multiple_value(rt->vec_up, (rt->view_h / 2.0)),
-	multiple_value(rt->vec_right, (rt->view_w / 2.0)))));
 }
 
 int		ft_rt(t_glob *gl)
 {
+	(gl->rt)->vec_dir = normalize(subtract((gl->rt)->look_at, (gl->rt)->c_pos));
+	(gl->rt)->up_left = add((gl->rt)->c_pos, add(multiple_value(
+	(gl->rt)->vec_dir, (gl->rt)->view_d), subtract(multiple_value(
+	(gl->rt)->vec_up, ((gl->rt)->view_h / 2.0)), multiple_value(
+	(gl->rt)->vec_right, ((gl->rt)->view_w / 2.0)))));
 	(gl->gr)->img = mlx_new_image((gl->gr)->mlx, (gl->gr)->s_x, (gl->gr)->s_y);
 	(gl->gr)->disp = mlx_get_data_addr((gl->gr)->img, &((gl->gr)->bpp),
 	&((gl->gr)->sizeline), &((gl->gr)->endian));

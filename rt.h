@@ -101,6 +101,7 @@ typedef struct	s_glob
 	t_obj		*obj;
 }				t_glob;
 
+int				ft_rt(t_glob *gl);
 void			raytracing(t_rayt *rt, t_graph *gr, t_obj *obj);
 t_vect			multiple(t_vect u, t_vect v);
 t_vect			multiple_value(t_vect u, double value);
