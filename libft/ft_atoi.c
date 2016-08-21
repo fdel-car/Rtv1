@@ -41,5 +41,7 @@ static int	ft_unload(const char *nptr, int i, int j, int sign)
 
 int			ft_atoi(const char *nptr)
 {
+	if (!nptr)
+		return (0);
 	return (ft_unload(nptr, 0, 0, 1));
 }

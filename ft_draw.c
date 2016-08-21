@@ -12,14 +12,14 @@
 
 #include "rt.h"
 
-void	ft_setpixel(t_graph *gr, int x, int y, t_color color)
+void	ft_setpixel(t_data *data, int x, int y, t_color color)
 {
 	int				i;
 
-	if (x > gr->s_x || y > gr->s_y || x < 0 || y < 0)
+	if (x > data->s_x || y > data->s_y || x < 0 || y < 0)
 		return ;
-	i = y * gr->sizeline + x * gr->bpp / 8;
-	gr->disp[i] = color.b;
-	gr->disp[i + 1] = color.g;
-	gr->disp[i + 2] = color.r;
+	i = y * data->sizeline + x * data->bpp / 8;
+	data->disp[i + 2] = color.r;
+	data->disp[i + 1] = color.g;
+	data->disp[i] = color.b;
 }

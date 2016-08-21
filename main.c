@@ -12,66 +12,129 @@
 
 #include "rt.h"
 
-t_vect	create_vect(double x, double y, double z)
+void	init_view(t_data *data)
 {
-	t_vect vect;
-
-	vect.x = x;
-	vect.y = y;
-	vect.z = z;
-	return (vect);
+	data->cam_p = create_vect(0, 0, -10);
+	data->look = create_vect(0, 0, 10);
+	data->a_x = create_vect(1, 0, 0);
+	data->vec_up = create_vect(0, 1, 0);
+	data->view_d = 2;
+	data->view_h = 1.5;
+	data->view_w = 2;
+	data->init_dir = normalize(subtract(data->look, data->cam_p));
+	data->x_ind = data->view_w / (float)data->s_x;
+	data->y_ind = data->view_h / (float)data->s_y;
 }
 
-void	ft_init_cam(t_rayt *rt)
+t_ray	*hit_obj(t_data *data, t_vect fr, t_vect dir, t_ray *ray)
 {
-	rt->c_pos = create_vect(0, 0, -6);
-	rt->look_at = create_vect(0, 0, 10);
-	rt->vec_up = create_vect(0, 1, 0);
-	rt->view_d = 2;
-	rt->view_h = 1.5;
-	rt->view_w = 2;
-	rt->vec_dir = normalize(subtract(rt->look_at, rt->c_pos));
-	rt->vec_right = multiple(rt->vec_up, rt->vec_dir);
-	rt->vec_up = multiple(rt->vec_dir, rt->vec_right);
+	t_info	*inf;
+
+	inf = (t_info *)malloc(sizeof(t_info));
+	inf->obj = data->obj;
+	inf->fr = fr;
+	inf->dir = dir;
+	ray->dist = -1;
+	ray->lst_obj = data->obj;
+	inf->a = SQ(dir.x) + SQ(dir.y) + SQ(dir.z);
+	while (inf->obj)
+	{
+		if ((inf->obj)->type == 1)
+			ray = hit_cercle(ray, inf);
+		if ((inf->obj)->type == 2)
+			ray = hit_plan(ray, inf);
+		if ((inf->obj)->type == 3)
+			ray = hit_cylinder(ray, inf);
+		inf->obj = (inf->obj)->next;
+	}
+	free(inf);
+	return (ray);
 }
 
-int		ft_rt(t_glob *gl)
+void	*raytracing(void *arg)
 {
-	(gl->rt)->vec_dir = normalize(subtract((gl->rt)->look_at, (gl->rt)->c_pos));
-	(gl->rt)->up_left = add((gl->rt)->c_pos, add(multiple_value(
-	(gl->rt)->vec_dir, (gl->rt)->view_d), subtract(multiple_value(
-	(gl->rt)->vec_up, ((gl->rt)->view_h / 2.0)), multiple_value(
-	(gl->rt)->vec_right, ((gl->rt)->view_w / 2.0)))));
-	(gl->gr)->img = mlx_new_image((gl->gr)->mlx, (gl->gr)->s_x, (gl->gr)->s_y);
-	(gl->gr)->disp = mlx_get_data_addr((gl->gr)->img, &((gl->gr)->bpp),
-	&((gl->gr)->sizeline), &((gl->gr)->endian));
-	raytracing(gl->rt, gl->gr, gl->obj);
-	mlx_put_image_to_window((gl->gr)->mlx, (gl->gr)->win, (gl->gr)->img, 0, 0);
-	mlx_destroy_image((gl->gr)->mlx, (gl->gr)->img);
+	t_data	*data;
+	t_ray	*ray;
+	t_vect	point;
+	t_vect	vec_dir;
+	int		y_max;
+	int		x;
+	int		y;
+
+	data = (t_data *)arg;
+	data->init = 1.0 / (float)NUM_THREAD * (float)data->id;
+	y = (float)data->init * (float)data->s_y;
+	y_max = y + data->s_y / NUM_THREAD;
+	pthread_cond_signal(&data->cond_img);
+	ray = (t_ray *)malloc(sizeof(t_ray));
+	while (y < y_max)
+	{
+		x = 0;
+		while (x < data->s_x)
+		{
+			point = subtract(add(data->up_left, multiple_value(data->vec_right,
+			data->x_ind * x)), multiple_value(data->vec_up, data->y_ind * y));
+			vec_dir = normalize(subtract(point, data->cam_p));
+			ray = hit_obj(data, data->cam_p, vec_dir, ray);
+			if (ray->dist != -1)
+				ft_setpixel(data, x, y, ft_light(ray));
+			x++;
+		}
+		y++;
+	}
+	free(ray);
+	pthread_exit(NULL);
+}
+
+int		build_img(t_data data)
+{
+	pthread_t	thread[NUM_THREAD];
+
+	data.vec_right = multiple(data.vec_up, data.init_dir);
+	data.vec_up = multiple(data.init_dir, data.vec_right);
+	data.up_left = add(data.cam_p, add(multiple_value(data.init_dir,
+	data.view_d), subtract(multiple_value(data.vec_up, (data.view_h / 2.0)),
+	multiple_value(data.vec_right, (data.view_w / 2.0)))));
+	data.img = mlx_new_image(data.mlx, data.s_x, data.s_y);
+	data.disp = mlx_get_data_addr(data.img, &(data.bpp),
+	&(data.sizeline), &(data.endian));
+	pthread_mutex_init(&(data.mutex_img), NULL);
+	pthread_cond_init(&(data.cond_img), NULL);
+	data.id = 0;
+	while (data.id < NUM_THREAD)
+	{
+		pthread_create(&thread[data.id], NULL, raytracing, &data);
+		pthread_cond_wait(&data.cond_img, &data.mutex_img);
+		data.id++;
+	}
+	data.id = 0;
+	while (data.id < NUM_THREAD)
+	{
+		pthread_join(thread[data.id], NULL);
+		data.id++;
+	}
+	pthread_mutex_destroy(&data.mutex_img);
+	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
+	mlx_destroy_image(data.mlx, data.img);
 	return (0);
 }
 
 int		main(int ac, char **av)
 {
-	t_glob *gl;
+	t_data		data;
 
 	if (ac != 2)
 		return (0);
-	gl = (t_glob *)malloc(sizeof(t_glob));
-	(void)av;
-	gl->gr = (t_graph *)malloc(sizeof(t_graph));
-	gl->rt = (t_rayt *)malloc(sizeof(t_rayt));
-	(gl->gr)->s_x = 720;
-	(gl->gr)->s_y = 480;
-	gl->obj = ft_objects(av[1]);
-	if (!(gl->obj))
+	data.obj = ft_objects(av[1]);
+	if (!data.obj)
 		return (0);
-	ft_init_cam(gl->rt);
-	(gl->gr)->mlx = mlx_init();
-	(gl->gr)->win = mlx_new_window((gl->gr)->mlx, (gl->gr)->s_x, (gl->gr)->s_y,
-	"RayTracer");
-	ft_rt(gl);
-	mlx_key_hook((gl->gr)->win, ft_key, gl);
-	mlx_hook((gl->gr)->win, 17, 0, ft_close, NULL);
-	mlx_loop((gl->gr)->mlx);
+	data.s_x = 720;
+	data.s_y = 480;
+	init_view(&data);
+	data.mlx = mlx_init();
+	data.win = mlx_new_window(data.mlx, data.s_x, data.s_y, "RayTracer");
+	build_img(data);
+	mlx_key_hook(data.win, key_handle, &data);
+	mlx_hook(data.win, 17, 0, ft_close, &data);
+	mlx_loop(data.mlx);
 }

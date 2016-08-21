@@ -12,8 +12,8 @@
 
 NAME = rtv1
 
-SRCS = main.c vector.c raytracing.c ft_draw.c ft_objects.c ft_light.c color.c \
-		ft_key.c ft_objects2.c vector2.c raytracing2.c
+SRCS =	main.c color.c ft_draw.c vector.c vector2.c ft_objects.c intersect.c \
+		ft_key.c light.c vector3.c ft_objects2.c
 
 OBJS = $(SRCS:.c=.o)
 

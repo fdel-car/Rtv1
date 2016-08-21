@@ -12,7 +12,17 @@
 
 #include "rt.h"
 
-t_color	multiple_color(t_color color, double value)
+t_color	create_color(int r, int g, int b)
+{
+	t_color color;
+
+	color.r = r;
+	color.g = g;
+	color.b = b;
+	return (color);
+}
+
+t_color	multiple_color(t_color color, float value)
 {
 	t_color rgb;
 

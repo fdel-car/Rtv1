@@ -22,7 +22,7 @@ t_vect	multiple(t_vect u, t_vect v)
 	return (w);
 }
 
-t_vect	multiple_value(t_vect u, double value)
+t_vect	multiple_value(t_vect u, float value)
 {
 	t_vect w;
 
@@ -54,8 +54,8 @@ t_vect	add(t_vect u, t_vect v)
 
 t_vect	normalize(t_vect u)
 {
-	t_vect w;
-	double length;
+	t_vect	w;
+	float	length;
 
 	length = sqrt((u.x * u.x) + (u.y * u.y) + (u.z * u.z));
 	w.x = u.x / length;

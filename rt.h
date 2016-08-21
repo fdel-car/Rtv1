@@ -12,7 +12,9 @@
 
 #ifndef RT_H
 # define RT_H
+# define NUM_THREAD 8
 # define EPSILON 0.001
+# define SQ(x) ((x) * (x))
 
 # include <math.h>
 # include <unistd.h>
@@ -21,111 +23,118 @@
 # include "mlx.h"
 # include "libft.h"
 
-// ATTENTION
+// BEWARE
 # include <stdio.h>
-// ATTENTION
+//
 
-typedef struct	s_graph
+typedef struct		s_color
 {
-	int			s_x;
-	int			s_y;
-	void		*mlx;
-	void		*win;
-	void		*img;
-	int			endian;
-	int			bpp;
-	int			sizeline;
-	char		*disp;
-	int			x;
-	int			y;
-}				t_graph;
+	int				r;
+	int				g;
+	int				b;
+}					t_color;
 
-typedef struct	s_vect
+typedef	struct		s_vect
 {
-	double		x;
-	double		y;
-	double		z;
-}				t_vect;
+	float			x;
+	float			y;
+	float			z;
+}					t_vect;
 
-typedef struct	s_color
+typedef	struct		s_obj
 {
-	int			r;
-	int			g;
-	int			b;
-}				t_color;
+	int				type;
+	float			rayon;
+	t_vect			pos;
+	t_vect			norm;
+	t_vect			dir;
+	t_color			color;
+	float			cons;
+	float			alpha;
+	void			*next;
+}					t_obj;
 
-typedef struct	s_rayt
+typedef struct		s_info
 {
-	double		view_d;
-	double		view_h;
-	double		view_w;
-	t_vect		c_pos;
-	t_vect		look_at;
-	t_vect		vec_up;
-	t_vect		vec_right;
-	t_vect		vec_dir;
-	t_vect		up_left;
-	double		x_ind;
-	double		y_ind;
-	t_vect		light;
-	double		a;
-	double		t1;
-	double		t2;
-	double		solut;
-	double		delta;
-	double		cosinus;
-}				t_rayt;
+	t_vect			fr;
+	t_vect			dir;
+	t_obj			*obj;
+	float			a;
+	float			b;
+	float			c;
+	float			delta;
+	float			t1;
+	float			t2;
+	float			solut;
+}					t_info;
 
-typedef struct	s_obj
+typedef struct		s_data
 {
-	t_vect		pos;
-	int			type;
-	void		*next;
-	double		rayon;
-	t_color		color;
-	t_vect		norm;
-	double		cons;
-}				t_obj;
+	t_obj			*obj;
+	void			*mlx;
+	void			*win;
+	void			*img;
+	int				s_x;
+	int				s_y;
+	int				bpp;
+	int				sizeline;
+	int				endian;
+	char			*disp;
+	pthread_mutex_t	mutex_img;
+	pthread_cond_t	cond_img;
+	int				id;
+	float			x_ind;
+	float			y_ind;
+	float			init;
+	float			view_d;
+	float			view_h;
+	float			view_w;
+	t_vect			a_x;
+	t_vect			init_dir;
+	t_vect			vec_dir;
+	t_vect			vec_up;
+	t_vect			vec_right;
+	t_vect			up_left;
+	t_vect			cam_p;
+	t_vect			look;
+}					t_data;
 
-typedef struct	s_node
+typedef struct	s_ray
 {
 	t_vect		hit_point;
-	double		dist;
+	float		dist;
 	t_obj		*obj;
-}				t_node;
+	t_obj		*lst_obj;
+}				t_ray;
 
-typedef struct	s_glob
-{
-	t_rayt		*rt;
-	t_graph		*gr;
-	t_obj		*obj;
-}				t_glob;
-
-int				ft_rt(t_glob *gl);
-void			raytracing(t_rayt *rt, t_graph *gr, t_obj *obj);
-t_vect			multiple(t_vect u, t_vect v);
-t_vect			multiple_value(t_vect u, double value);
-t_vect  		subtract(t_vect u, t_vect v);
-t_vect			add(t_vect u, t_vect v);
-t_vect			normalize(t_vect u);
-void			ft_setpixel(t_graph *gr, int x, int y, t_color color);
-int				ft_color(t_rayt *rt);
-double			dot_product(t_vect u, t_vect v);
-t_obj			*ft_objects(char *scene);
-t_vect			create_vect(double x, double y, double z);
-t_color			ft_light(t_node *node, t_rayt *rt, t_obj *obj);
-t_color			add_color(t_color u, t_color v);
-t_color			subtract_color(t_color u, t_color v);
-t_color			multiple_color(t_color color, double value);
-t_color			create_color(int r, int g, int b);
-t_node			*hit_cercle(t_rayt *rt, t_obj *obj, t_node *node, t_vect from);
-t_node			*hit_plan(t_rayt *rt, t_obj *obj, t_node *node, t_vect from);
-t_node			*hit_cylinder(t_rayt *rt, t_obj *obj, t_node *node, t_vect from);
-void			add_plan(t_obj **first_ob, char *line);
-void			add_cylinder(t_obj **first_ob, char *line);
-void			add_node(t_obj **first_ob, t_obj *new);
-void			update_node(t_obj *obj, t_vect hit, double dist, t_node *node);
-int				ft_key(int keycode, t_glob *gl);
-int				ft_close();
+void				ft_setpixel(t_data *data, int x, int y, t_color color);
+void				add_cylinder(t_obj **first_ob, char *line);
+void				add_cone(t_obj **first_ob, char *line);
+void				add_node(t_obj **first_ob, t_obj *new);
+t_ray				*hit_cercle(t_ray *ray, t_info *inf);
+t_ray				*hit_plan(t_ray *ray, t_info *inf);
+t_ray				*hit_cylinder(t_ray *ray, t_info *inf);
+t_color				create_color(int r, int g, int b);
+t_color				multiple_color(t_color color, float value);
+t_color				add_color(t_color u, t_color v);
+t_color				subtract_color(t_color u, t_color v);
+t_color				ft_light(t_ray *ray);
+t_vect				create_vect(float x, float y, float z);
+t_vect				multiple(t_vect u, t_vect v);
+t_vect				multiple_value(t_vect u, float value);
+t_vect				subtract(t_vect u, t_vect v);
+t_vect				add(t_vect u, t_vect v);
+t_vect				normalize(t_vect u);
+t_vect				create_vect(float x, float y, float z);
+t_vect				rot_x(float theta, t_vect u);
+t_vect				rot_y(float theta, t_vect u);
+t_vect				rot_z(float theta, t_vect u);
+t_vect				rot_any(t_vect u, t_vect a, float theta);
+t_obj				*ft_objects(char *scene);
+float				dotp_n(t_vect u, t_vect v);
+int					key_handle(int keycode, t_data *data);
+int					protection(char **tab, t_obj *new, int n);
+int					build_img(t_data data);
+int					ft_close(t_data *data);
 
 #endif
