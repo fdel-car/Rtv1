@@ -1,0 +1,3 @@
+0->light pos: 6 4 0 color: 255 255 255
+4->cone angle(max=90): 40 pos: 0 0 15 dir 0 1 0 color: 0 255 255
+2->plan normale: 0 5 -1 pos: 0 -6 15 color: 0 255 0

@@ -6,33 +6,36 @@
 #    By: fdel-car <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/25 16:12:54 by fdel-car          #+#    #+#              #
-#    Updated: 2016/05/30 13:23:16 by fdel-car         ###   ########.fr        #
+#    Updated: 2016/03/21 17:38:24 by fdel-car         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = rtv1
 
-SRCS =	main.c color.c ft_draw.c vector.c vector2.c ft_objects.c intersect.c \
-		ft_key.c light.c vector3.c ft_objects2.c
+SRCS = src/main.c src/color.c src/ft_draw.c src/vector.c src/vector2.c \
+		src/ft_objects.c src/intersect.c src/ft_key.c src/light.c \
+		src/vector3.c src/ft_objects2.c
 
-OBJS = $(SRCS:.c=.o)
+OBJS = main.o color.o ft_draw.o vector.o vector2.o ft_objects.o intersect.o \
+		ft_key.o light.o vector3.o ft_objects2.o
 
 CFLAGS = -Wall -Wextra -Werror
+
 MLXFLAGS = -lmlx -framework OpenGL -framework AppKit -lpthread
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@cd libft && make re && cd ..
-	@gcc $(CFLAGS) -o $@ $^ ./libft/libft.a $(MLXFLAGS)
-	@echo "\033[1;31mDone"
+	@make re -C libft
+	@gcc  -I./includes $(MLXFLAGS) -o $@ $^ ./libft/libft.a
+	@echo "\033[1;31m$(NAME) compiled successfully"
 	@echo "\033[1A\033[0;39m"
 
-%.o: %.c
-	@gcc $(CFLAGS) -c $^ -I./libft/includes
+$(OBJS): $(SRCS)
+	@clang $(CFLAGS) -c $^ -I./libft/includes -I./includes
 
 clean:
-	@cd libft && make clean && cd ..
+	@make clean -C libft
 	@rm -rf $(OBJS)
 fclean: clean
 	@rm -rf $(NAME)
