@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_objects2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdel-car <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fdel-car <fdel-car@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/16 15:10:47 by fdel-car          #+#    #+#             */
-/*   Updated: 2016/08/16 15:10:48 by fdel-car         ###   ########.fr       */
+/*   Updated: 2018/09/19 15:48:59 by fdel-car         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void	add_cylinder(t_obj **first_ob, char *line)
 	tab = ft_strsplit(line, ' ');
 	if (protection(tab, new, 14))
 		return ;
-	new->rayon = ft_atof(tab[2]);
-	new->pos = create_vect(ft_atof(tab[4]), ft_atof(tab[5]), ft_atof(tab[6]));
-	new->dir = normalize(create_vect(ft_atof(tab[8]), ft_atof(tab[9]),
-	ft_atof(tab[10])));
-	new->color = create_color(ft_atoi(tab[12]), ft_atoi(tab[13]),
-	ft_atoi(tab[14]));
+	new->rayon = atof(tab[2]);
+	new->pos = create_vect(atof(tab[4]), atof(tab[5]), atof(tab[6]));
+	new->dir = normalize(create_vect(atof(tab[8]), atof(tab[9]),
+	atof(tab[10])));
+	new->color = create_color(atoi(tab[12]), atoi(tab[13]),
+	atoi(tab[14]));
 	new->next = NULL;
 	while (tab[i])
 		free(tab[i++]);
@@ -68,14 +68,14 @@ void	add_cone(t_obj **first_ob, char *line)
 	tab = ft_strsplit(line, ' ');
 	if (protection(tab, new, 14))
 		return ;
-	new->alpha = ft_atof(tab[2]) * M_PI / 180;
+	new->alpha = atof(tab[2]) * M_PI / 180;
 	if (new->alpha > 1.5707)
 		new->alpha = 1.5707;
-	new->pos = create_vect(ft_atof(tab[4]), ft_atof(tab[5]), ft_atof(tab[6]));
-	new->dir = normalize(create_vect(ft_atof(tab[8]), ft_atof(tab[9]),
-	ft_atof(tab[10])));
-	new->color = create_color(ft_atoi(tab[12]), ft_atoi(tab[13]),
-	ft_atoi(tab[14]));
+	new->pos = create_vect(atof(tab[4]), atof(tab[5]), atof(tab[6]));
+	new->dir = normalize(create_vect(atof(tab[8]), atof(tab[9]),
+	atof(tab[10])));
+	new->color = create_color(atoi(tab[12]), atoi(tab[13]),
+	atoi(tab[14]));
 	new->next = NULL;
 	while (tab[i])
 		free(tab[i++]);

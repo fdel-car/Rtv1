@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_objects.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdel-car <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fdel-car <fdel-car@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/20 14:45:52 by fdel-car          #+#    #+#             */
-/*   Updated: 2016/07/21 20:30:47 by fdel-car         ###   ########.fr       */
+/*   Updated: 2018/09/19 15:48:59 by fdel-car         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	add_light(t_obj **first_ob, char *line)
 	tab = ft_strsplit(line, ' ');
 	if (protection(tab, new, 8))
 		return ;
-	new->pos = create_vect(ft_atof(tab[2]), ft_atof(tab[3]), ft_atof(tab[4]));
-	new->color = create_color(ft_atoi(tab[6]), ft_atoi(tab[7]),
-	ft_atoi(tab[8]));
+	new->pos = create_vect(atof(tab[2]), atof(tab[3]), atof(tab[4]));
+	new->color = create_color(atoi(tab[6]), atoi(tab[7]),
+	atoi(tab[8]));
 	new->next = NULL;
 	while (tab[i])
 		free(tab[i++]);
@@ -61,10 +61,10 @@ void	add_cercle(t_obj **first_ob, char *line)
 	tab = ft_strsplit(line, ' ');
 	if (protection(tab, new, 10))
 		return ;
-	new->rayon = ft_atof(tab[2]);
-	new->pos = create_vect(ft_atof(tab[4]), ft_atof(tab[5]), ft_atof(tab[6]));
-	new->color = create_color(ft_atoi(tab[8]), ft_atoi(tab[9]),
-	ft_atoi(tab[10]));
+	new->rayon = atof(tab[2]);
+	new->pos = create_vect(atof(tab[4]), atof(tab[5]), atof(tab[6]));
+	new->color = create_color(atoi(tab[8]), atoi(tab[9]),
+	atoi(tab[10]));
 	new->next = NULL;
 	while (tab[i])
 		free(tab[i++]);
@@ -84,11 +84,11 @@ void	add_plan(t_obj **first_ob, char *line)
 	tab = ft_strsplit(line, ' ');
 	if (protection(tab, new, 12))
 		return ;
-	new->norm = normalize(create_vect(ft_atof(tab[2]), ft_atof(tab[3]),
-	ft_atof(tab[4])));
-	new->pos = create_vect(ft_atof(tab[6]), ft_atof(tab[7]), ft_atof(tab[8]));
-	new->color = create_color(ft_atoi(tab[10]), ft_atoi(tab[11]),
-	ft_atoi(tab[12]));
+	new->norm = normalize(create_vect(atof(tab[2]), atof(tab[3]),
+	atof(tab[4])));
+	new->pos = create_vect(atof(tab[6]), atof(tab[7]), atof(tab[8]));
+	new->color = create_color(atoi(tab[10]), atoi(tab[11]),
+	atoi(tab[12]));
 	new->cons = -dotp_n(new->pos, new->norm);
 	new->next = NULL;
 	while (tab[i])

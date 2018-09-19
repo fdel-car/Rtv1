@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdel-car <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fdel-car <fdel-car@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/31 11:41:02 by fdel-car          #+#    #+#             */
-/*   Updated: 2016/07/11 18:07:51 by fdel-car         ###   ########.fr       */
+/*   Updated: 2018/09/19 15:48:17 by fdel-car         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define SQ(x) ((x) * (x))
 
 # include <math.h>
+# include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <pthread.h>
