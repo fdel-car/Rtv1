@@ -4,8 +4,8 @@ Première version d'un raytracer codé en C, très basique il ne contient que qu
 
 ### pillars.raw
 
-![alt tag](https://github.com/fdel-car/RTv1/blob/master/img/pillars.png)
+![alt tag](/screenshots/pillars.png)
 
 ### everything.raw
 
-![alt tag](https://github.com/fdel-car/RTv1/blob/master/img/everything.png)
+![alt tag](/screenshots/everything.png)
