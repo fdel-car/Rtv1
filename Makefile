@@ -26,7 +26,7 @@ $(OBJS_DIR):
 	@mkdir -p ./objs
 
 $(TARGET): $(OBJS)
-	@$(CC)  -I./includes $(MLXFLAGS) -o $@ $^ ./libft/libft.a
+	@$(CC) -I./includes $(MLXFLAGS) -o $@ $^ ./libft/libft.a
 	@echo "\n$(GREEN)The target $(TARGET) was compiled successfully!$(RESET)"
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
