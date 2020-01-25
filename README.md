@@ -1,4 +1,4 @@
-# Rtv1
+# Rt v1
 
 Première version d'un raytracer codé en C, très basique il ne contient que quelques formes de bases.
 
